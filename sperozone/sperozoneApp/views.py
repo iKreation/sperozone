@@ -7,9 +7,9 @@ import json
 
 from sperozoneApp.models import Ocorrencia
 
-def get_ocorrencia(request, ocorrencia_id):
+def get_ocorrencia(ocorrencia_id):
 	ocorrencia = get_object_or_404(Ocorrencia, pk=ocorrencia_id)
-	return HttpResponse("A aceder a ocorrencia")
+	return HttpResponse("A aceder a ocorrencia "+ocorrencia_id+" "+ocorrencia.title)
 
 def remove_ocorrencia(oc_id):
     Ocorrencia.objects.filter(id=oc_id).delete()
@@ -33,10 +33,12 @@ def new_ocorrencia(request):
     return HttpResponse("Nova ocorrencia adicionada")
 
 def controller(request, pk):
+    print "method "+request.method
+    print request
     if request.method == 'DELETE':
         return remove_ocorrencia(pk)
     elif request.method == 'GET':
-        return get_ocorrencia(request,pk)
+        return get_ocorrencia(pk)
     elif request.method == 'PUT' or 'POST':
         data = json.loads(request.body)
         if data.has_key('id') and data['id'] == 0:
