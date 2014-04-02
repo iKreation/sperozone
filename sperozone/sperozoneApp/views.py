@@ -34,13 +34,11 @@ def new_ocorrencia(request):
     data = json.loads(request.body)
 
     ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=['lon'])
-    #ocorrencia = Ocorrencia(title="stuff",description="Not much",report_date=timezone.now(),status="Never", lat=1.4, lon=1.4)
     ocorrencia.save()
     return HttpResponse("Nova ocorrencia adicionada")
 
 @csrf_exempt
 def controller(request, pk=None):
-    print "method "+request.method
     if request.method == 'DELETE':
         return remove_ocorrencia(pk)
     elif request.method == 'GET':
@@ -49,11 +47,9 @@ def controller(request, pk=None):
         else:
             return list_ocorrencias()
     elif request.method == 'PUT' or 'POST':
-        print "entrez!"
         data = json.loads(request.body)
         print data
         if (pk==None):
-            print "NUEVO!"
             return new_ocorrencia(request)
         else:
             return edit_ocorrencia(request,pk)
