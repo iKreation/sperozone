@@ -7,16 +7,21 @@ from sperozoneApp.models import Ocorrencia
 from django.views.decorators.csrf import csrf_exempt
 import json
 
+
 def get_ocorrencia(ocorrencia_id):
 	ocorrencia = get_object_or_404(Ocorrencia, pk=ocorrencia_id)
-	return HttpResponse("A aceder a ocorrencia "+ocorrencia_id+" "+ocorrencia.title)
+	return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
 def list_ocorrencias():
-    return HttpResponse(Ocorrencia.objects.all())
+    ocorrencias = Ocorrencia.objects.all()
+    list_to_json = [oc.to_dict() for oc in ocorrencias]
+    return HttpResponse(json.dumps(list_to_json),content_type="application/json")
 
 def remove_ocorrencia(oc_id):
     Ocorrencia.objects.filter(id=oc_id).delete()
-    return HttpResponse(Ocorrencia.objects.all())
+    ocorrencias = Ocorrencia.objects.all()
+    list_to_json = [oc.to_dict() for oc in ocorrencias]
+    return HttpResponse(json.dumps(list_to_json),content_type="application/json")
 
 def edit_ocorrencia(request, oc_id):
     ocorrencia = get_object_or_404(Ocorrencia, pk=oc_id)
@@ -28,14 +33,14 @@ def edit_ocorrencia(request, oc_id):
     ocorrencia.lat = data['lat']
     ocorrencia.lon = data['lon']
     ocorrencia.save()
-    return HttpResponse("Ocorrencia modificada")
+    return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
 def new_ocorrencia(request):
     data = json.loads(request.body)
 
     ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=['lon'])
     ocorrencia.save()
-    return HttpResponse("Nova ocorrencia adicionada")
+    return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
 @csrf_exempt
 def controller(request, pk=None):

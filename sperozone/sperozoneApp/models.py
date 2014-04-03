@@ -10,5 +10,8 @@ class Ocorrencia(models.Model):
 	lon = models.CharField(max_length=100)
 
 
+	def to_dict(self):
+		return {"title": self.title, "description": self.description, "report_date":self.report_date.strftime('%Y-%m-%d %H:%M'), "status":self.status,"lat":self.lat, "lon":self.lon}
+
 	def __unicode__(self):
 		return self.title
