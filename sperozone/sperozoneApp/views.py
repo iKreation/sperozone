@@ -29,7 +29,7 @@ def edit_ocorrencia(request, oc_id):
     ocorrencia.title = data['title']
     ocorrencia.description = data['description']
     ocorrencia.report_date = timezone.now()
-    ocorrencia.status = data['title']
+    ocorrencia.status = data['status']
     ocorrencia.lat = data['lat']
     ocorrencia.lon = data['lon']
     ocorrencia.save()
