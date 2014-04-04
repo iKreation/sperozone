@@ -7,7 +7,7 @@ from sperozoneApp.models import Ocorrencia
 from django.views.decorators.csrf import csrf_exempt
 import json
 
-
+#author Joao Campos
 def get_ocorrencia(ocorrencia_id):
 	ocorrencia = get_object_or_404(Ocorrencia, pk=ocorrencia_id)
 	return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
