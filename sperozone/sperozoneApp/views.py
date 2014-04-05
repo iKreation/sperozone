@@ -38,7 +38,7 @@ def edit_ocorrencia(request, oc_id):
 def new_ocorrencia(request):
     data = json.loads(request.body)
 
-    ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=['lon'])
+    ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=data['lon'])
     ocorrencia.save()
     return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
