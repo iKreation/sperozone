@@ -1,9 +1,0 @@
-{% if lista_de_ocorrencias %}
-    <ul>
-    {% for ocorrencia in lista_de_ocorrencias %}
-        <li><a href="{% url 'sperozoneApp:detail' ocorrencia.id %}">{{ ocorrencia.title }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>Não existem ocorrências reportadas.</p>
-{% endif %}
