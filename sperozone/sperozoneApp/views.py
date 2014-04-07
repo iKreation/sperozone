@@ -29,22 +29,24 @@ def edit_ocorrencia(request, oc_id):
     ocorrencia.title = data['title']
     ocorrencia.description = data['description']
     ocorrencia.report_date = timezone.now()
-    ocorrencia.status = data['title']
+    ocorrencia.status = data['status']
     ocorrencia.lat = data['lat']
     ocorrencia.lon = data['lon']
     ocorrencia.save()
     return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
 def new_ocorrencia(request):
+    print "CARGANDO!"
     data = json.loads(request.body)
-
-    ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=['lon'])
+    print data
+    ocorrencia = Ocorrencia(title=data['title'],description=data['description'],report_date=timezone.now(),status=data['status'], lat=data['lat'], lon=data['lon'])
     ocorrencia.save()
     return HttpResponse(json.dumps(ocorrencia.to_dict()),content_type="application/json")
 
 @csrf_exempt
 def controller(request, pk=None):
     if request.method == 'DELETE':
+        print request
         return remove_ocorrencia(pk)
     elif request.method == 'GET':
         if pk!=None:
@@ -52,9 +54,10 @@ def controller(request, pk=None):
         else:
             return list_ocorrencias()
     elif request.method == 'PUT' or 'POST':
-        data = json.loads(request.body)
-        print data
+        print request.body+"\n"
+        
         if (pk==None):
+            print "NUEVO\n"
             return new_ocorrencia(request)
         else:
             return edit_ocorrencia(request,pk)
